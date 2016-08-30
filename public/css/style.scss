@@ -1,0 +1,66 @@
+@import "../lib/bootstrap4/scss/bootstrap";
+@import "../lib/tether/dist/css/tether.min.css";
+
+.navbar {
+  margin-bottom: 1rem;
+}
+
+.row {
+
+  .select2-container--default .select2-selection {
+    border: 1px solid #ccc;
+    border-radius: 4px !important;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset !important;
+    color: #555;
+    outline: 0 none;
+
+    height: 34px !important;
+    line-height: 1.42857;
+    padding: 6px 24px 6px 12px;
+
+    .select2-selection__rendered {
+      color: #555;
+      display: block;
+      overflow: hidden;
+      padding: 0 !important;
+
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      line-height: inherit;
+    }
+  }
+
+  .has-error {
+    input, .select2-selection {
+      border: 1px solid red;
+      box-shadow: none;
+    }
+
+    .help-block {
+      color: red;
+    }
+  }
+
+  .has-success {
+    .form-control, .select2-selection {
+      border-color: #5cb85c;
+    }
+  }
+}
+
+.highlight {
+  background-color: yellow;
+}
+
+
+//.clientFsContainer {
+//  position: absolute;
+//  z-index: 10;
+//  background: white;
+//  box-shadow: 1px 6px 17px -10px black;
+//  right: 0;
+//}
+
+
+
+
