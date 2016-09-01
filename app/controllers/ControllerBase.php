@@ -12,6 +12,8 @@ class ControllerBase extends Controller
 
         $this->assets->addJs('lib/jquery/jquery-3.1.0.min.js');
 
+        $this->assets->addJs('lib/tether/dist/js/tether.min.js');
+
         // DataTable
         $this->assets->addJs('lib/DataTable/media/js/jquery.dataTables.min.js');
         $this->assets->addJs('lib/DataTable/media/js/dataTables.bootstrap4.min.js');
@@ -25,6 +27,7 @@ class ControllerBase extends Controller
         $this->assets->addJs('lib/tableFixedHeader/table-fixed-header.js');
 
         $this->assets->addJs('js/jsnFastSearch.js');
+        $this->assets->addJs('js/custom.js');
 
     }
 

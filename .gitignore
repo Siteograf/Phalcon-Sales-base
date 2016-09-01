@@ -13,3 +13,5 @@ Thumbs.db
 .idea/
 vendor/gulp/node_modules
 /schemas/
+/public/lib/bootstrap4/docs/
+/public/lib/bootstrap3/

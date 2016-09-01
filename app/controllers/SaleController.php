@@ -45,13 +45,18 @@ class SaleController extends ControllerBase
         $this->view->page = $paginator->getPaginate();
     }
 
-    public function startToPartnerAction()
+    public function startAction()
     {
         $saleId = $this->request->getPost("saleId", 'striptags');
 
         $sale = Sale::findFirstById($saleId);
 
-        $sale->date_start = time();
+        // If full make it empty
+        if ($sale->date_start) {
+            $sale->date_start = '';
+        } else {
+            $sale->date_start = time();
+        }
 
         if ($sale->save() == false) {
             foreach ($sale->getMessages() as $message) {
@@ -67,8 +72,66 @@ class SaleController extends ControllerBase
                 "params" => [$saleId],
             )
         );
+    }
 
+    public function doneAction()
+    {
+        $saleId = $this->request->getPost("saleId", 'striptags');
 
+        $sale = Sale::findFirstById($saleId);
+
+        // If full make it empty
+        if ($sale->date_done) {
+            $sale->date_done = '';
+        } else {
+            $sale->date_done = time();
+        }
+
+        if ($sale->save() == false) {
+            foreach ($sale->getMessages() as $message) {
+                $this->flash->error($message);
+            }
+            return $this->forward('sale/edit/' . $saleId);
+        }
+
+        // Forward to controller who will give JSON with updated values
+        $this->dispatcher->forward(
+            array(
+                "action" => "jsnOneSale",
+                "params" => [$saleId],
+            )
+        );
+    }
+
+    // We paid to partner his price
+    public function partnerPaidAction()
+    {
+        $saleId = $this->request->getPost("saleId", 'striptags');
+
+        $sale = Sale::findFirstById($saleId);
+
+        // If full make it empty
+        if ($sale->date_partner_paid) {
+            $sale->date_partner_paid = '';
+        } else {
+            $sale->date_partner_paid = time();
+            $sale->price_partner_paid = $sale->price_partner;
+        }
+
+        if ($sale->save() == false) {
+            foreach ($sale->getMessages() as $message) {
+                $this->flash->error($message);
+            }
+            return $this->forward('sale/edit/' . $saleId);
+        }
+
+        // Forward to controller who will give JSON with updated values
+        $this->dispatcher->forward(
+            array(
+                "action" => "jsnOneSale",
+                "params" => [$saleId],
+            )
+        );
     }
 
     // Get info about one sale. It used to update one row in sales table
@@ -93,6 +156,10 @@ class SaleController extends ControllerBase
 
         $oneSale['price_profit_plan'] = $sale->price_profit_plan;
         $oneSale['price_profit_fact'] = $sale->price_profit_plan;
+
+        $oneSale['date_start'] = $sale->date_start;
+        $oneSale['date_done'] = $sale->date_done;
+        $oneSale['date_partner_paid'] = $sale->date_partner_paid;
 
         echo json_encode($oneSale);
         die;

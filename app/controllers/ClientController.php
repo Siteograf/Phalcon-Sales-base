@@ -83,6 +83,12 @@ class ClientController extends ControllerBase
             "client_id = {$id}",
             "order" => "id ASC"
         ]);
+
+//        print "<pre>";
+//        print_r($sales->toArray());
+//        print "</pre>";
+
+
         $this->view->sales = $sales;
 
         $this->view->form = new SaleForm(null, array('edit' => true, 'client_id' => $id));
