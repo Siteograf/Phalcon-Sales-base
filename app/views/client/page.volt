@@ -76,7 +76,14 @@
 
         <td class="price_base">{{ sale.price_base }}</td>
         <td class="price_client_paid">{{ sale.price_client_paid }}</td>
-        <td class="price_client_debt">{{ sale.price_client_debt }}</td>
+        <td class="price_client_debt">{{ sale.price_client_debt }}
+
+            {% if sale.price_client_debt is not empty %}
+                {% set clientDebtBtnClass = 'btn-success' %}
+            <span class="clientDebtBtn btn btn-outline-success btn-sm" saleId="{{ sale.id }}" title="{{ sale.date_partner_paid }}">КПД</span>
+            {% endif %}
+
+        </td>
 
         <td class="salePartnerName">{{ sale.salePartner.name }} </td>
 
@@ -101,6 +108,20 @@
                 {% set partnerPaidBtnClass = 'btn-outline-secondary' %}
             {% endif %}
             <span class="partnerPaidBtn btn {{ partnerPaidBtnClass }} btn-sm" saleId="{{ sale.id }}" title="{{ sale.date_partner_paid }}">ЗП</span>
+
+            {% if sale.date_client_notice is not empty %}
+                {% set clientNoticeBtnClass = 'btn-success' %}
+            {% else %}
+                {% set clientNoticeBtnClass = 'btn-outline-secondary' %}
+            {% endif %}
+            <span class="clientNoticeBtn btn {{ clientNoticeBtnClass }} btn-sm" saleId="{{ sale.id }}" title="{{ sale.date_partner_paid }}">Увед</span>
+
+            {% if sale.date_client_service_get is not empty %}
+                {% set clientServiceGetBtnClass = 'btn-success' %}
+            {% else %}
+                {% set clientServiceGetBtnClass = 'btn-outline-secondary' %}
+            {% endif %}
+            <span class="clientServiceGetBtn btn {{ clientServiceGetBtnClass }} btn-sm" saleId="{{ sale.id }}" title="{{ sale.date_partner_paid }}">Клиент</span>
 
 
         </td>

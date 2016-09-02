@@ -134,6 +134,100 @@ class SaleController extends ControllerBase
         );
     }
 
+    //
+    public function clientDebtAction()
+    {
+        $saleId = $this->request->getPost("saleId", 'striptags');
+
+        $sale = Sale::findFirstById($saleId);
+
+        // If full make it empty
+        if ($sale->date_client_debt_satisfaction) {
+            $sale->date_client_debt_satisfaction = '';
+        } else {
+            $sale->date_client_debt_satisfaction = time();
+            $sale->price_client_paid = $sale->price_base;
+        }
+
+        if ($sale->save() == false) {
+            foreach ($sale->getMessages() as $message) {
+                $this->flash->error($message);
+            }
+            return $this->forward('sale/edit/' . $saleId);
+        }
+
+        // Forward to controller who will give JSON with updated values
+        $this->dispatcher->forward(
+            array(
+                "action" => "jsnOneSale",
+                "params" => [$saleId],
+            )
+        );
+    }
+
+    //
+    public function clientNoticeAction()
+    {
+        $saleId = $this->request->getPost("saleId", 'striptags');
+
+        $sale = Sale::findFirstById($saleId);
+
+        // If full make it empty
+        if ($sale->date_client_notice) {
+            $sale->date_client_notice = '';
+        } else {
+            $sale->date_client_notice = time();
+
+        }
+
+        if ($sale->save() == false) {
+            foreach ($sale->getMessages() as $message) {
+                $this->flash->error($message);
+            }
+            return $this->forward('sale/edit/' . $saleId);
+        }
+
+        // Forward to controller who will give JSON with updated values
+        $this->dispatcher->forward(
+            array(
+                "action" => "jsnOneSale",
+                "params" => [$saleId],
+            )
+        );
+    }
+
+
+    //
+    public function clientServiceGetAction()
+    {
+        $saleId = $this->request->getPost("saleId", 'striptags');
+
+        $sale = Sale::findFirstById($saleId);
+
+        // If full make it empty
+        if ($sale->date_client_service_get) {
+            $sale->date_client_service_get = '';
+        } else {
+            $sale->date_client_service_get = time();
+
+        }
+
+        if ($sale->save() == false) {
+            foreach ($sale->getMessages() as $message) {
+                $this->flash->error($message);
+            }
+            return $this->forward('sale/edit/' . $saleId);
+        }
+
+        // Forward to controller who will give JSON with updated values
+        $this->dispatcher->forward(
+            array(
+                "action" => "jsnOneSale",
+                "params" => [$saleId],
+            )
+        );
+    }
+
     // Get info about one sale. It used to update one row in sales table
     public function jsnOneSaleAction($saleId)
     {
@@ -155,11 +249,13 @@ class SaleController extends ControllerBase
         $oneSale['price_partner_debt'] = $sale->price_partner_debt;
 
         $oneSale['price_profit_plan'] = $sale->price_profit_plan;
-        $oneSale['price_profit_fact'] = $sale->price_profit_plan;
+        $oneSale['price_profit_fact'] = $sale->price_profit_fact;
 
         $oneSale['date_start'] = $sale->date_start;
         $oneSale['date_done'] = $sale->date_done;
         $oneSale['date_partner_paid'] = $sale->date_partner_paid;
+        $oneSale['date_client_notice'] = $sale->date_client_notice;
+        $oneSale['date_client_service_get'] = $sale->date_client_service_get;
 
         echo json_encode($oneSale);
         die;
